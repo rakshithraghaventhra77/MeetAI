@@ -60,14 +60,14 @@ export default function Home() {
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Create Account</h2>
         <Input placeholder='Name' value={name} onChange={(e) => setName(e.target.value)} />
-        <Input placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} />
+        <Input placeholder='Email' value={email} onChange={(e) => setEmail(e.target.value)} type='email' autoComplete='email' />
         <Input placeholder='Password' value={password} onChange={(e) => setPassword(e.target.value)} type='password' />
         <Button onClick={onSubmit}>Create User</Button>
       </div>
 
       <div className="flex flex-col gap-4">
         <h2 className="text-xl font-bold">Login</h2>
-        <Input placeholder='Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} />
+        <Input placeholder='Email' value={loginEmail} onChange={(e) => setLoginEmail(e.target.value)} type='email' autoComplete='email' />
         <Input placeholder='Password' value={loginPassword} onChange={(e) => setLoginPassword(e.target.value)} type='password' />
         <Button onClick={onLogin}>Login</Button>
       </div>
