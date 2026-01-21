@@ -39,6 +39,7 @@ const formSchema = z.object({
 export const SignInView = () => {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
+  const [isPending, setIsPending] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -49,6 +50,7 @@ export const SignInView = () => {
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setError(null);
+    setIsPending(true);
 
     const { error } = await authClient.signIn.email(
       {
@@ -57,6 +59,7 @@ export const SignInView = () => {
       },
       {
         onSuccess: () => {
+          setIsPending(false);
           router.push('/');
           router.refresh();
         },
@@ -65,6 +68,7 @@ export const SignInView = () => {
 
     if (error) {
       setError(error.message ?? 'Unable to sign in. Please try again.');
+      setIsPending(false);
     }
   };
 
@@ -114,22 +118,27 @@ export const SignInView = () => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <Button type="submit" className="w-full">
-                Sign In
+              <Button type="submit" className="w-full" disabled={isPending}>
+                {isPending ? 'Signing in...' : 'Sign In'}
               </Button>
 
               <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
                 <span className="bg-card text-muted-foreground relative z-10 px-2">Or continue with</span>
               </div>
 
-              <div className="grid gap-2 sm:grid-cols-2">
-                <Button variant="outline" type="button" className="w-full">
-                  Google
-                </Button>
-                <Button variant="outline" type="button" className="w-full">
-                  Github
-                </Button>
-              </div>
+              <Button
+                disabled={isPending}
+                onClick={() => {
+                  authClient.signIn.social({
+                    provider: 'google',
+                  })
+                }}
+                variant="outline"
+                type="button"
+                className="w-full"
+              >
+                Google
+              </Button>
 
               <div className="text-center text-sm">
                 Don’t have an account?{' '}
