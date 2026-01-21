@@ -8,9 +8,9 @@ export const HomeView  = () => {
   const {data: session } = authClient.useSession();
 
   if (!session){
-    return(  
+    return (
       <p>Loading...</p>
-    )
+    );
   }
   return (
     <div className="flex flex-col p-4 gap-y-4">
