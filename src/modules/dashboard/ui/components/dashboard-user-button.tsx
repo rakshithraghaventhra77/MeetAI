@@ -26,7 +26,7 @@ export const DashboardUserButton = () => {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <div className="hover:opacity-80 transition-opacity cursor-pointer flex items-center gap-3">
+        <div className="hover:opacity-80 transition-opacity cursor-pointer flex items-center gap-x-2">
           <Avatar>
             <AvatarFallback className="bg-gradient-to-br from-green-500 to-white-600 text-white font-sans">
               {data?.user?.name?.[0] || "?"}
