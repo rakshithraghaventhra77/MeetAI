@@ -60,7 +60,7 @@ export const SignInView = () => {
       {
         onSuccess: () => {
           setIsPending(false);
-          router.push('/');
+          router.push('/dashboard');
           router.refresh();
         },
       }
@@ -128,10 +128,27 @@ export const SignInView = () => {
 
               <Button
                 disabled={isPending}
-                onClick={() => {
-                  authClient.signIn.social({
-                    provider: 'google',
-                  })
+                onClick={async () => {
+                  setError(null);
+                  setIsPending(true);
+                  try {
+                    await authClient.signIn.social({
+                      provider: 'google',
+                    }, {
+                      onSuccess: () => {
+                        setIsPending(false);
+                        router.push('/dashboard');
+                        router.refresh();
+                      },
+                      onError: (error) => {
+                        setError(error.message ?? 'Failed to sign in with Google');
+                        setIsPending(false);
+                      },
+                    });
+                  } catch (err) {
+                    setError('An error occurred during sign in');
+                    setIsPending(false);
+                  }
                 }}
                 variant="outline"
                 type="button"
@@ -149,7 +166,7 @@ export const SignInView = () => {
             </form>
           </Form>
 
-          <div className="bg-gradient-to-b from-green-700 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
+          <div className="bg-gradient-to-b from-green-900 to-green-900 relative hidden md:flex flex-col gap-y-4 items-center justify-center">
             <img src="/logo.svg" alt="Meet.AI Logo" className="h-[92px] w-[92px]" />
             <p className="text-2xl font-semibold text-white">Meet.AI</p>
           </div>
