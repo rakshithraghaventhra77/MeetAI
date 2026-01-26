@@ -1,6 +1,7 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { DashboardSidebar } from "@/modules/dashboard/ui/components/dashboard-sidebar";
 import { DashboardNavbar } from "@/modules/dashboard/ui/components/dashboard-navbar";
+import { DashboardProvider } from "./context";
 
 interface Props {
   children: React.ReactNode;
@@ -8,13 +9,15 @@ interface Props {
 
 const Layout = ({ children }: Props) => {
   return (
-    <SidebarProvider>
-      <DashboardSidebar/>
-      <main className="flex flex-col h-screen w-full bg-muted">
-        <DashboardNavbar />
-        {children}
-      </main>
-    </SidebarProvider>
+    <DashboardProvider>
+      <SidebarProvider>
+        <DashboardSidebar/>
+        <main className="flex flex-col h-screen w-full bg-muted">
+          <DashboardNavbar />
+          {children}
+        </main>
+      </SidebarProvider>
+    </DashboardProvider>
   );
 };
 

@@ -1,5 +1,6 @@
 "use client";
 import { BotIcon, VideoIcon, StarIcon } from "lucide-react";
+import { useDashboard } from "@/app/dashboard/context";
 import {
   Sidebar,
   SidebarContent,
@@ -20,12 +21,12 @@ const firstSection = [
   {
     icon: VideoIcon,
     label: "Meetings",
-    href: "/meetings",
+    view: "meetings" as const,
   },
   {
     icon: BotIcon,
     label: "Agents",
-    href: "/agents",
+    view: "agents" as const,
   },
 ];
 
@@ -33,11 +34,13 @@ const secondSection = [
   {
     icon: StarIcon,
     label: "Upgrade",
-    href: "/upgrade",
+    view: "upgrade" as const,
   },
 ];
 
 export const DashboardSidebar = () => {
+  const { setActiveView } = useDashboard();
+
   return (
     <Sidebar>
       <SidebarHeader className="text-sidebar-accent-foreground">
@@ -54,14 +57,17 @@ export const DashboardSidebar = () => {
           <SidebarGroupContent>
             <SidebarMenu>
               {firstSection.map((item) => (
-                <SidebarMenuItem key={item.href}>
+                <SidebarMenuItem key={item.view}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.href}>
+                    <button 
+                      onClick={() => setActiveView(item.view)}
+                      className="flex items-center gap-2 w-full cursor-pointer"
+                    >
                       <item.icon className="size-5" />
                       <span className="text-sm font-medium tracking-tight">
                         {item.label}
                       </span>
-                    </Link>
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -74,14 +80,17 @@ export const DashboardSidebar = () => {
             <SidebarMenu>
               <Separator className="opacity-10 text-[#5D6B68]" />
               {secondSection.map((item) => (
-                <SidebarMenuItem key={item.href}>
+                <SidebarMenuItem key={item.view}>
                   <SidebarMenuButton asChild>
-                    <Link href={item.href}>
+                    <button
+                      onClick={() => setActiveView(item.view)}
+                      className="flex items-center gap-2 w-full cursor-pointer"
+                    >
                       <item.icon className="size-5" />
-                      <span className="text- sm font-medium tracking-tight">
+                      <span className="text-sm font-medium tracking-tight">
                         {item.label}
                       </span>
-                    </Link>
+                    </button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
