@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  CommandDialog,
+  CommandResponsiveDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -19,7 +19,7 @@ export const DashboardCommands = ({ open, setOpen }: DashboardCommandsProps) => 
   const router = useRouter();
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Find a meeting or agent" />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -56,8 +56,16 @@ export const DashboardCommands = ({ open, setOpen }: DashboardCommandsProps) => 
           >
             Upgrade
           </CommandItem>
+          <CommandItem
+            onSelect={() => {
+              router.push("/settings");
+              setOpen(false);
+            }}
+          >
+            Settings
+          </CommandItem>
         </CommandGroup>
       </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   );
 };
