@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import {
-  CommandDialog,
+  CommandResponsiveDialog,
   CommandEmpty,
   CommandGroup,
   CommandInput,
@@ -32,7 +32,7 @@ export const DashboardCommand = ({ open, setOpen }: DashboardCommandProps) => {
   }, [open, setOpen]);
 
   return (
-    <CommandDialog open={open} onOpenChange={setOpen}>
+    <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
       <CommandInput placeholder="Type a command or search..." />
       <CommandList>
         <CommandEmpty>No results found.</CommandEmpty>
@@ -69,8 +69,16 @@ export const DashboardCommand = ({ open, setOpen }: DashboardCommandProps) => {
           >
             Upgrade
           </CommandItem>
+          <CommandItem
+            onSelect={() => {
+              router.push("/settings");
+              setOpen(false);
+            }}
+          >
+            Settings
+          </CommandItem>
         </CommandGroup>
       </CommandList>
-    </CommandDialog>
+    </CommandResponsiveDialog>
   );
 };
