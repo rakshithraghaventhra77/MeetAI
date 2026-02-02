@@ -10,29 +10,21 @@ import {
   CommandResponsiveDialog,
 } from "./ui/command";
 
-interface Props {
-  options: Array<{
-    id: string;
-    value: string;
-    children: ReactNode;
-  }>;
+interface CommandSelectProps {
+  options: Array<{ id: string; value: string; children: ReactNode }>;
   onSelect: (value: string) => void;
-  onSearch?: (query: string) => void;
   value: string;
   placeholder?: string;
-  isSearchable?: boolean;
   className?: string;
 }
 
-export const CommandSelect = ({
+export function CommandSelect({
   options,
   onSelect,
-  onSearch,
   value,
   placeholder = "Select an option...",
-  isSearchable = false,
-  className = "",
-}: Props) => {
+  className,
+}: CommandSelectProps) {
   const [open, setOpen] = useState(false);
   const selectedOption = options.find((option) => option.value === value);
 
@@ -48,15 +40,13 @@ export const CommandSelect = ({
           className
         )}
       >
-        <div>{selectedOption ? selectedOption.children : placeholder}</div>
-        <ChevronsDownIcon />
+        {selectedOption ? selectedOption.children : placeholder}
+        <ChevronsDownIcon className="size-4" />
       </Button>
       <CommandResponsiveDialog open={open} onOpenChange={setOpen}>
         <CommandInput placeholder="Search..." />
         <CommandList>
-          <CommandEmpty>
-            <span className="text-muted-foreground text-sm">No options found.</span>
-          </CommandEmpty>
+          <CommandEmpty>No options found.</CommandEmpty>
           {options.map((option) => (
             <CommandItem
               key={option.id}
@@ -72,4 +62,4 @@ export const CommandSelect = ({
       </CommandResponsiveDialog>
     </>
   );
-};
+}

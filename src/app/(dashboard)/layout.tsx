@@ -11,29 +11,24 @@ interface DashboardLayoutProps {
   children: ReactNode;
 }
 
-const AuthCheck = async ({ children }: DashboardLayoutProps) => {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
+async function AuthCheck({ children }: DashboardLayoutProps) {
+  const session = await auth.api.getSession({ headers: await headers() });
   if (!session) redirect("/sign-in");
   return <>{children}</>;
-};
+}
 
-const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+export default function DashboardLayout({ children }: DashboardLayoutProps) {
   return (
     <SidebarProvider>
-      <Suspense fallback={<LoadingState title="Loading layout..." description="Please wait a moment" />}>
+      <Suspense fallback={<LoadingState title="Loading..." description="Please wait" />}>
         <DashboardSidebar />
-        <main className="flex flex-col h-screen w-screen bg-muted">
+        <main className="flex flex-col h-screen w-full bg-muted">
           <DashboardNavbar />
-          <Suspense
-            fallback={<LoadingState title="Loading Agent..." description="Please wait a moment " />}
-          >
+          <Suspense fallback={<LoadingState title="Loading..." description="Please wait" />}>
             <AuthCheck>{children}</AuthCheck>
           </Suspense>
         </main>
       </Suspense>
     </SidebarProvider>
   );
-};
-export default DashboardLayout;
+}

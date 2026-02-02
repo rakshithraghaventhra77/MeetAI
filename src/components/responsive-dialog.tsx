@@ -1,5 +1,4 @@
-import { type ReactNode, useId } from "react";
-
+import { type ReactNode } from "react";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerDescription, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
@@ -12,9 +11,8 @@ interface ResponsiveDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export const ResponsiveDialog = ({ title, description, children, open, onOpenChange }: ResponsiveDialogProps) => {
+export function ResponsiveDialog({ title, description, children, open, onOpenChange }: ResponsiveDialogProps) {
   const isMobile = useIsMobile();
-  const titleId = useId();
 
   if (isMobile) {
     return (
@@ -24,7 +22,7 @@ export const ResponsiveDialog = ({ title, description, children, open, onOpenCha
             <DrawerTitle>{title}</DrawerTitle>
             <DrawerDescription>{description}</DrawerDescription>
           </DrawerHeader>
-          <section className="p-4">{children}</section>
+          <div className="p-4">{children}</div>
         </DrawerContent>
       </Drawer>
     );
@@ -37,8 +35,8 @@ export const ResponsiveDialog = ({ title, description, children, open, onOpenCha
           <DialogTitle>{title}</DialogTitle>
           <DialogDescription>{description}</DialogDescription>
         </DialogHeader>
-        <section>{children}</section>
+        {children}
       </DialogContent>
     </Dialog>
   );
-};
+}

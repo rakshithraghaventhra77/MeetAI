@@ -1,6 +1,5 @@
 "use client";
 
-
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -29,31 +28,21 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export const SignUpView = () => {
+export function SignUpView() {
   const [error, setError] = useState<string | null>(null);
-  const [pending, setPending] = useState<boolean>(false);
+  const [pending, setPending] = useState(false);
   const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    },
+    defaultValues: { name: "", email: "", password: "", confirmPassword: "" },
   });
 
   const onSubmit = async (data: z.infer<typeof formSchema>) => {
     setError(null);
     setPending(true);
     await authClient.signUp.email(
-      {
-        name: data.name,
-        email: data.email,
-        password: data.password,
-        callbackURL: "/",
-      },
+      { name: data.name, email: data.email, password: data.password, callbackURL: "/" },
       {
         onSuccess: () => {
           router.push("/");
@@ -67,18 +56,13 @@ export const SignUpView = () => {
     );
   };
 
-  const onSocial = async (provider: "google") => {
+  const onSocial = async () => {
     setError(null);
     setPending(true);
     await authClient.signIn.social(
+      { provider: "google", callbackURL: "/" },
       {
-        provider: provider,
-        callbackURL: "/",
-      },
-      {
-        onSuccess: () => {
-          setPending(false);
-        },
+        onSuccess: () => setPending(false),
         onError: ({ error }) => {
           setPending(false);
           setError(error.message);
@@ -89,141 +73,117 @@ export const SignUpView = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <Card className="overflow-hidden p-0">
+      <Card>
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
-            <form className="p-6 md:p-8" onSubmit={form.handleSubmit(onSubmit)}>
-              <div className="flex flex-col gap-6">
-                <div className="flex flex-col items-center text-center">
-                  <h1 className="text-2xl font-bold">Let&apos;s get started</h1>
-                  <p className="text-muted-foreground text-balance">Create your account</p>
-                </div>
+            <form className="p-8 flex flex-col gap-6" onSubmit={form.handleSubmit(onSubmit)}>
+              <div className="text-center">
+                <h1 className="text-2xl font-bold">Let&apos;s get started</h1>
+                <p className="text-muted-foreground">Create your account</p>
+              </div>
 
-                <div className="grid gap-3">
-                  <FormField
-                    control={form.control}
-                    name="name"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Name</FormLabel>
-                        <FormControl>
-                          <Input type="text" placeholder="John Doe" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid gap-3">
-                  <FormField
-                    control={form.control}
-                    name="email"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Email</FormLabel>
-                        <FormControl>
-                          <Input type="email" placeholder="hanna@example.com" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid gap-3">
-                  <FormField
-                    control={form.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="********" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                <div className="grid gap-3">
-                  <FormField
-                    control={form.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Confirm Password</FormLabel>
-                        <FormControl>
-                          <Input type="password" placeholder="********" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
-
-                {!!error && (
-                  <Alert className="bg-destructive/10 border-none">
-                    <OctagonAlertIcon className="h-4 w-4 text-destructive" />
-                    <AlertTitle>{error}</AlertTitle>
-                  </Alert>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input type="text" placeholder="John Doe" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
                 )}
+              />
 
-                <Button disabled={pending} className="w-full" type="submit">
-                  Sign Up
-                </Button>
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input type="email" placeholder="your@email.com" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-                <div className="after:border-border relative text-center text-sm after:absolute after:inset-0 after:top-1/2 after:z-0 after:flex after:items-center after:border-t">
-                  <span className="bg-card text-muted-foreground relative z-10 px-2">
-                    Or continue with
-                  </span>
+              <FormField
+                control={form.control}
+                name="password"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="********" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="confirmPassword"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Confirm Password</FormLabel>
+                    <FormControl>
+                      <Input type="password" placeholder="********" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {error && (
+                <Alert className="bg-destructive/10 border-destructive/20">
+                  <OctagonAlertIcon className="h-4 w-4 text-destructive" />
+                  <AlertTitle>{error}</AlertTitle>
+                </Alert>
+              )}
+
+              <Button disabled={pending} className="w-full" type="submit">
+                Sign Up
+              </Button>
+
+              <div className="relative text-center text-sm">
+                <div className="absolute inset-0 flex items-center">
+                  <div className="w-full border-t" />
                 </div>
+                <span className="relative bg-background px-2 text-muted-foreground">
+                  Or continue with
+                </span>
+              </div>
 
-                <div className="grid grid-cols-1 gap-4">
-                  <Button
-                    onClick={() => onSocial("google")}
-                    disabled={pending}
-                    type="button"
-                    variant={"outline"}
-                    className="w-full"
-                  >
-                    <FaGoogle />
-                  </Button>
-                </div>
+              <Button onClick={onSocial} disabled={pending} type="button" variant="outline" className="w-full">
+                <FaGoogle />
+                Google
+              </Button>
 
-                <div className="text-center text-sm">
-                  Already have an account?{" "}
-                  <Link href="/sign-in" className="underline underline-offset-4 ">
-                    Sign In
-                  </Link>
-                </div>
+              <div className="text-center text-sm">
+                Already have an account?{" "}
+                <Link href="/sign-in" className="underline">
+                  Sign In
+                </Link>
               </div>
             </form>
           </Form>
 
-          <div className="bg-radial from-sidebar-accent to-sidebar relative hidden md:flex flex-col items-center justify-center gap-y-4">
-            <Image
-              src="/logo.svg"
-              alt="Meet.AI logo"
-              width={92}
-              height={92}
-              style={{
-                width: "auto",
-                height: "auto",
-                maxWidth: "92px",
-                maxHeight: "92px",
-              }}
-            />
+          <div className="bg-gradient-to-br from-sidebar-accent to-sidebar hidden md:flex flex-col items-center justify-center gap-4">
+            <Image src="/logo.svg" alt="Meet.AI" width={92} height={92} />
             <p className="text-2xl font-semibold text-white">Meet.AI</p>
           </div>
         </CardContent>
       </Card>
 
-      <div className="text-muted-foreground *:[a]:hover:text-primary text-center text-xs text-balance *:[a]:underline *:[a]:underline-offset-4">
-        By clicking continue, you agree to our <a href="#">Terms of Service</a> and{" "}
-        <a href="#">Privacy Policy</a>.
+      <div className="text-center text-xs text-muted-foreground">
+        By clicking continue, you agree to our{" "}
+        <a href="#" className="underline hover:text-primary">Terms of Service</a> and{" "}
+        <a href="#" className="underline hover:text-primary">Privacy Policy</a>.
       </div>
-    </div >
+    </div>
   );
-};
+}

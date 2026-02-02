@@ -1,18 +1,18 @@
 import Image from "next/image";
 
-interface Props {
+interface EmptyStateProps {
   title: string;
   description: string;
 }
 
-export const EmptyState = ({ title, description }: Props) => {
+export function EmptyState({ title, description }: EmptyStateProps) {
   return (
-    <div className="flex flex-col items-center justify-center">
-      <Image src="/empty.svg" alt="Empty State" width={240} height={240} priority />
-      <div className="flex flex-col gap-y-6 max-w-md mx-auto text-center ">
-        <h6 className="text-lg font-medium">{title}</h6>
-        <p className="text-sm">{description}</p>
+    <div className="flex flex-col items-center justify-center gap-6 py-16">
+      <Image src="/empty.svg" alt="Empty State" width={240} height={240} />
+      <div className="text-center max-w-md">
+        <h3 className="text-lg font-medium">{title}</h3>
+        <p className="text-sm text-muted-foreground mt-2">{description}</p>
       </div>
     </div>
   );
-};
+}
