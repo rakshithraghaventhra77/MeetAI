@@ -42,7 +42,7 @@ export async function generateMeetingSummary(transcript: string): Promise<string
 export async function generateRealtimeToken(): Promise<string> {
   try {
     const response = await openai.beta.realtime.sessions.create({
-      model: 'gpt-4o-realtime-preview-2024-12-26',
+      model: 'gpt-4o-realtime-preview-2024-12-17',
       modalities: ['text', 'audio'],
       instructions: `You are a helpful AI meeting participant. 
       - Listen actively to the user

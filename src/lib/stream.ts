@@ -1,9 +1,9 @@
-import { StreamClient } from '@stream-io/video-react-sdk';
+import { StreamVideoClient } from '@stream-io/video-react-sdk';
 
 const apiKey = process.env.NEXT_PUBLIC_STREAM_API_KEY;
 
 export function initializeStreamClient(userId: string, userToken: string, userName: string, userImage?: string) {
-  return new StreamClient({
+  return new StreamVideoClient({
     apiKey: apiKey || '',
     user: {
       id: userId,

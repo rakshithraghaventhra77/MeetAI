@@ -10,11 +10,13 @@ interface GenerateAvatarProps {
 }
 
 export function GenerateAvatar({ seed, className, variant }: GenerateAvatarProps) {
+  const options = variant === "botttsNeutral"
+    ? { seed }
+    : { seed };
+  
   const avatar = createAvatar(
     variant === "botttsNeutral" ? botttsNeutral : initials,
-    variant === "botttsNeutral"
-      ? { seed }
-      : { seed, fontWeight: 500, fontSize: 42 }
+    options
   );
 
   return (

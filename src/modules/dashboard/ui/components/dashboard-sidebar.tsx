@@ -18,7 +18,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import DashboardUserButton from "./dashboard-user-button";
 
-const mainNavigation = [
+const mainNavigation: Array<{
+  icon: React.ComponentType<{ className?: string }>;
+  label: string;
+  href: "/" | "/meetings" | "/agents";
+}> = [
   { icon: VideoIcon, label: "Meetings", href: "/meetings" },
   { icon: BotIcon, label: "Agents", href: "/agents" },
 ];

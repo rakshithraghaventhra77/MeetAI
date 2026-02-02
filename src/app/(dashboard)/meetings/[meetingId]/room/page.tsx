@@ -1,7 +1,7 @@
 "use client";
 
 import { authClient } from "@/lib/auth-client";
-import { useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { VideoRoom } from "@/modules/meetings/ui/components/video-room";
 import { redirect } from "next/navigation";
 import { Suspense, useEffect, useState } from "react";
@@ -46,9 +46,10 @@ function VideoRoomContent({ params }: { params: Promise<{ meetingId: string }> }
   }, [params]);
 
   // Get meeting data
-  const { data: meeting } = useSuspenseQuery(
-    meetingId ? trpc.meetings.getOne.queryOptions({ id: meetingId }) : { queryKey: ["disabled"], queryFn: () => null }
-  );
+  const { data: meeting } = useQuery({
+    ...trpc.meetings.getOne.queryOptions({ id: meetingId! }),
+    enabled: !!meetingId,
+  });
 
   // Generate token
   useEffect(() => {
